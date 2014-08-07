@@ -1,13 +1,12 @@
 class Patient
 
-  attr_reader :name, :birthdate, :doctor_id, :insurance, :patient_id
+  attr_reader :name, :birthdate, :insurance, :id
 
   def initialize(attributes)
     @name = attributes['name']
     @birthdate= attributes['birthdate']
-    @doctor_id = attributes['doctor_id']
     @insurance = attributes['insurance']
-    @patient_id = attributes['patient_id']
+    @id = attributes['id']
   end
 
   def self.all
@@ -15,20 +14,30 @@ class Patient
     patients = []
     results.each do |result|
       name = result['name']
-      id = result['name']
+      id = result['id']
       birthdate = result['birthdate']
-      doctor_id = result['doctor_id']
-      patients << Patient.new({'name' => name, 'birthdate' => birthdate, 'doctor_id' => doctor_id})
+      insurance = result['insurance']
+      patients << Patient.new({'name' => name, 'birthdate' => birthdate, 'insurance' => insurance, 'id' =>id})
     end
     patients
   end
 
   def save
-    DB.exec("INSERT INTO patients (name, birthdate, doctor_id) VALUES ('#{@name}', '#{@birthdate}', #{@doctor_id});")
+    results = DB.exec("INSERT INTO patients (name, birthdate, insurance) VALUES ('#{@name}', '#{@birthdate}', '#{@insurance}')RETURNING id;")
+    @id = results.first['id'].to_i
   end
 
-  def == (another_patient)
+  def ==(another_patient)
     self.name == another_patient.name
+  end
+
+    def Patient.assign_patient(user_doctor_choice)
+    results = DB.exec("SELECT * FROM doctor_patient WHERE id = #{user_doctor_choice};")
+    patient_ids = []
+    results.each do |result|
+      patient_ids << result
+    end
+    patient_ids
   end
 
 

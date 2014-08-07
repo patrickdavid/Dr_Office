@@ -1,12 +1,10 @@
 class Doctor
 
-  attr_reader :name, :specialty, :id
+  attr_reader :name, :id
 
   def initialize(attributes)
     @name = attributes['name']
-    @specialty = attributes['specialty']
-    @id = attributes['id']
-
+    @id = attributes['id'].to_i
   end
 
   def self.all
@@ -14,33 +12,30 @@ class Doctor
     @doctors = []
     results.each do |result|
       name = result['name']
-      specialty = result['specialty']
       id = result['id'].to_i
-      @doctors << Doctor.new({'name' => name, 'specialty' => specialty, 'id' => id})
+      @doctors << Doctor.new({'name' => name, 'id' => id})
     end
     @doctors
   end
 
   def save
-    results = DB.exec("INSERT INTO doctors (name, specialty) VALUES ('#{@name}', '#{@specialty}') RETURNING id;")
+    results = DB.exec("INSERT INTO doctors (name) VALUES ('#{@name}') RETURNING id;")
     @id = results.first['id'].to_i
-    spec_results = DB.exec("INSERT INTO specialties (id, specialty) VALUES (#{@id}, '#{@specialty}');")
   end
 
-  def == (another_doctor)
+  def ==(another_doctor)
     self.name == another_doctor.name
   end
 
+  def add_patient(patient)
+    DB.exec("INSERT INTO doctor_patient (doctor_id, patient_id) VALUES (#{@id}, #{patient.id});")
+  end
 
-  def Doctor.specialty_doctors(needed_specialty)
-    Doctor.all
-    doc_list = []
-    @doctors.each do |doctor|
-      p doctor.name
-      if needed_specialty == doctor.specialty
-        doc_list << doctor.name
-      end
-    end
-    p doc_list
+  def add_spec(specialty)
+    DB.exec("INSERT INTO doctor_specialty (doctor_id, specialty_id) VALUES (#{@id}, #{specialty.id});")
+  end
+
+  def add_insurance(insurance)
+    DB.exec("INSERT INTO doctor_insurance (doctor_id, insurance_id) VALUES (#{@id}, #{insurance.id});")
   end
 end

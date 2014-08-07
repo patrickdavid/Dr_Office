@@ -48,17 +48,15 @@ end
 def add_doctor
   puts "Please enter a doctor's name"
   doctor_name = gets.chomp
-  puts "Please enter a doctor's specialty"
-  doctor_specialty = gets.chomp
-  new_doctor = Doctor.new({'name' => doctor_name, 'specialty'=> doctor_specialty})
+  new_doctor = Doctor.new({'name' => doctor_name})
   new_doctor.save
-  add_insurance_doc(new_doctor.id)
+  # add_insurance_doc(new_doctor.id)
   puts "Doctor Added"
 end
 
 def list_doctors
   Doctor.all.each do |info|
-    puts "#{info.name}" + ' Specialty: ' + "#{info.specialty}" + " id: #{info.id}"
+    puts "#{info.name}" + " id: #{info.id}"
   end
 end
 
@@ -76,11 +74,11 @@ def add_patient
   puts "patient Added"
 end
 
-def add_insurance(doc_id, pat_name)
-  puts "Input Insurance Provider"
-  company = gets.chomp
-  DB.exec("INSERT INTO insurance (company_name, doctor_id, patient_name) VALUES ('#{company}', #{doc_id}, '#{pat_name}');")
-end
+# def add_insurance(doc_id, pat_name)
+#   puts "Input Insurance Provider"
+#   company = gets.chomp
+#   DB.exec("INSERT INTO insurance (company_name, doctor_id, patient_name) VALUES ('#{company}', #{doc_id}, '#{pat_name}');")
+# end
 
 def add_insurance_doc(doc_id)
   puts "Input Insurance Provider"
@@ -135,4 +133,9 @@ def list_docs_special
     end
   end
 end
+
+def assign_patient
+
+end
+
 main_menu
