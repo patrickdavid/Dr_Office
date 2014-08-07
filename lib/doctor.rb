@@ -33,6 +33,7 @@ class Doctor
 
 
   def Doctor.specialty_doctors(needed_specialty)
+    Doctor.all
     doc_list = []
     @doctors.each do |doctor|
       p doctor.name
