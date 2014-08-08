@@ -13,5 +13,14 @@ describe 'Insurance' do
     expect(Insurance.all).to eq [insurance1]
   end
 
+  it 'deletes an insurance from the system' do
+    insurance1 = Insurance.new({'insurance'=>'Blue Cross'})
+    insurance1.save
+    insurance2 = Insurance.new({'insurance'=>'Blue Shield'})
+    insurance2.save
+    Insurance.delete(insurance1)
+    expect(Insurance.all).to eq [insurance2]
+  end
+
 
 end

@@ -32,22 +32,10 @@ class Specialty
     self.specialty == another_specialty.specialty
   end
 
-  def specialty_doctors(specialty_input)
-    results = DB.exec("SELECT * FROM specialties;")
-    doctor_id_array = []
-    results.each do |result|
-      id = result['id']
-      specialty = result['specialty']
-      if specialty_input == specialty
-        matching_doctor_id = id
-        new_results = DB.exec("SELECT * FROM doctor_specialty;")
-        new_results.each do |result|
-          doctor_id = result['doctor_id']
-          specialty_id = result['specialty_id']
-          if matching_doctor_id == specialty_id
-            doctor_id_array << doctor_id
-          end
-        end
+  def self.delete(input_specialty)
+    Specialty.all.each do |specialty|
+      if input_specialty == specialty
+        DB.exec("DELETE FROM specialties WHERE id = #{input_specialty.id};")
       end
     end
   end

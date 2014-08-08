@@ -22,9 +22,16 @@ class Insurance
     insurances
   end
 
-    def ==(another_insurance)
+  def ==(another_insurance)
     self.name == another_insurance.name
   end
 
+  def self.delete(input_insurance)
+    Insurance.all.each do |insurance|
+      if input_insurance == insurance
+        DB.exec("DELETE FROM insurance WHERE id = #{input_insurance.id};")
+      end
+    end
+  end
 
 end
