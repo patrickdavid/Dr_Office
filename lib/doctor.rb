@@ -1,4 +1,6 @@
 require'./lib/specialty.rb'
+require'./lib/insurance.rb'
+require'./lib/patient.rb'
 class Doctor
 
   attr_reader :name, :id
@@ -75,6 +77,26 @@ class Doctor
       end
     end
     doctor_name
+  end
+
+  def self.patient_seek(input_doctor)
+    patients = []
+    patient_name = []
+    Doctor.all.each do |doctor|
+      if input_doctor.id == doctor.id.to_i
+        docs_id = DB.exec("SELECT * FROM doctor_patient WHERE doctor_id = '#{input_doctor.id}';")
+        docs_id.each do |doc|
+          patients << doc['patient_id']
+        end
+        Patient.all.each do |patient|
+          if patients.include?(patient.id)
+            patient_name << patient.name
+          end
+        end
+      end
+    end
+    # binding.pry
+    patient_name
   end
 
   def add_spec(specialty)

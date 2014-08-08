@@ -81,6 +81,18 @@ describe 'Doctor' do
     doctor2.add_insurance(insurance1)
     Doctor.insurance_seek(insurance1)
     expect(Doctor.insurance_seek(insurance1)).to eq [doctor1.name, doctor2.name]
+  end
 
+  it 'lists all the patients a specific doctor sees' do
+    doctor1 = Doctor.new({'name' => 'Dr. Wang'})
+    doctor1.save
+    patient1 = Patient.new({'name'=>'Joe Smith', 'birthdate' => '1980-01-01', 'insurance'=>'Blue Cross'})
+    patient1.save
+    patient2 = Patient.new({'name'=>'Jane Smith', 'birthdate' => '1980-01-01', 'insurance'=>'Blue Cross'})
+    patient2.save
+    doctor1.add_patient(patient1)
+    doctor1.add_patient(patient2)
+    Doctor.patient_seek(doctor1)
+    expect(Doctor.patient_seek(doctor1)).to eq [patient1.name, patient2.name]
   end
 end
