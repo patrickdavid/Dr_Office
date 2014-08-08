@@ -5,6 +5,7 @@ require 'patient'
 require 'pry'
 require 'specialty'
 require 'insurance'
+require 'appointment'
 
 DB = PG.connect(:dbname => 'doctor_test')
 
@@ -17,5 +18,6 @@ RSpec.configure do |config|
     DB.exec("DELETE FROM insurance *;")
     DB.exec("DELETE FROM doctor_specialty *;")
     DB.exec("DELETE FROM doctor_insurance *;")
+    DB.exec("DELETE FROM appointments *;")
   end
 end

@@ -106,4 +106,6 @@ describe 'Doctor' do
     Doctor.delete(doctor1)
     expect(Doctor.all).to eq [doctor2]
   end
+
+
 end
