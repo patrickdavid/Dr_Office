@@ -29,7 +29,6 @@ describe 'Doctor' do
     patient1 = Patient.new({'name'=>'Joe Smith', 'birthdate' => '1980-01-01', 'insurance'=>'Blue Cross'})
     patient1.save
     doctor1.add_patient(patient1)
-    # expect doctorid and patientid to be in the same row in patient_doctor table
     results = DB.exec('SELECT * FROM doctor_patient;')
     expect(results.first['doctor_id'].to_i).to eq doctor1.id
     expect(results.first['patient_id'].to_i).to eq patient1.id
@@ -55,5 +54,19 @@ describe 'Doctor' do
     results = DB.exec('SELECT * FROM doctor_insurance;')
     expect(results.first['doctor_id'].to_i).to eq doctor1.id
     expect(results.first['insurance_id'].to_i).to eq insurance1.id
+  end
+
+  it 'lists all the doctors of the same specialty' do
+    doctor1 = Doctor.new({'name' => 'Dr. Wang'})
+    doctor1.save
+    specialty1 = Specialty.new({'specialty' => 'Optometry'})
+    specialty1.save
+    doctor1.add_spec(specialty1)
+    doctor2 = Doctor.new({'name' => 'Dr. Smith'})
+    doctor2.save
+    doctor2.add_spec(specialty1)
+    Doctor.specialty_seek(specialty1)
+    expect(Doctor.specialty_seek(specialty1)).to eq [doctor1.name, doctor2.name]
+
   end
 end
