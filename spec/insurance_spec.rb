@@ -12,4 +12,6 @@ describe 'Insurance' do
     insurance1.save
     expect(Insurance.all).to eq [insurance1]
   end
+
+
 end

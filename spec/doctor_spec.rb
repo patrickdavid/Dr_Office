@@ -69,4 +69,18 @@ describe 'Doctor' do
     expect(Doctor.specialty_seek(specialty1)).to eq [doctor1.name, doctor2.name]
 
   end
+
+  it 'lists all the doctors who take the same insurance' do
+    doctor1 = Doctor.new({'name' => 'Dr. Wang'})
+    doctor1.save
+    insurance1 = Insurance.new({'insurance'=>'Blue Cross'})
+    insurance1.save
+    doctor1.add_insurance(insurance1)
+    doctor2 = Doctor.new({'name' => 'Dr. Smith'})
+    doctor2.save
+    doctor2.add_insurance(insurance1)
+    Doctor.insurance_seek(insurance1)
+    expect(Doctor.insurance_seek(insurance1)).to eq [doctor1.name, doctor2.name]
+
+  end
 end

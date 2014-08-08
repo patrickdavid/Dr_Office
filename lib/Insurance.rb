@@ -25,4 +25,6 @@ class Insurance
     def ==(another_insurance)
     self.name == another_insurance.name
   end
+
+
 end

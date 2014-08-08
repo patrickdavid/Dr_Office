@@ -58,6 +58,25 @@ class Doctor
     doctor_name
   end
 
+  def self.insurance_seek(input_insurance)
+    insurance_docs = []
+    doctor_name = []
+    Insurance.all.each do |insurance|
+      if input_insurance.id == insurance.id.to_i
+        ins_id = DB.exec("SELECT * FROM doctor_insurance WHERE insurance_id = '#{insurance.id}';")
+        ins_id.each do |ins|
+          insurance_docs << ins['doctor_id'].to_i
+        end
+        Doctor.all.each do |doctor|
+          if insurance_docs.include?(doctor.id)
+            doctor_name << doctor.name
+          end
+        end
+      end
+    end
+    doctor_name
+  end
+
   def add_spec(specialty)
     DB.exec("INSERT INTO doctor_specialty (doctor_id, specialty_id) VALUES (#{@id}, #{specialty.id});")
   end
