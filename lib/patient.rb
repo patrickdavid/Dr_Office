@@ -40,5 +40,13 @@ class Patient
     patient_ids
   end
 
+  def self.delete(input_patient)
+    Patient.all.each do |patient|
+      if input_patient == patient
+        DB.exec("DELETE FROM patients WHERE id = #{input_patient.id};")
+      end
+    end
+  end
+
 
 end

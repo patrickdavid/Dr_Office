@@ -103,7 +103,7 @@ describe 'Doctor' do
     patient1 = Patient.new({'name'=>'Joe Smith', 'birthdate' => '1980-01-01', 'insurance'=>'Blue Cross'})
     patient1.save
     doctor1.add_patient(patient1)
-    doctor1.delete(doctor1)
+    Doctor.delete(doctor1)
     expect(Doctor.all).to eq [doctor2]
   end
 end
