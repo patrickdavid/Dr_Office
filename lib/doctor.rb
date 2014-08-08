@@ -106,4 +106,12 @@ class Doctor
   def add_insurance(insurance)
     DB.exec("INSERT INTO doctor_insurance (doctor_id, insurance_id) VALUES (#{@id}, #{insurance.id});")
   end
+
+  def delete(input_doctor)
+    Doctor.all.each do |doctor|
+      if input_doctor == doctor
+        DB.exec("DELETE FROM doctors WHERE id = #{input_doctor.id};")
+      end
+    end
+  end
 end

@@ -67,7 +67,6 @@ describe 'Doctor' do
     doctor2.add_spec(specialty1)
     Doctor.specialty_seek(specialty1)
     expect(Doctor.specialty_seek(specialty1)).to eq [doctor1.name, doctor2.name]
-
   end
 
   it 'lists all the doctors who take the same insurance' do
@@ -94,5 +93,17 @@ describe 'Doctor' do
     doctor1.add_patient(patient2)
     Doctor.patient_seek(doctor1)
     expect(Doctor.patient_seek(doctor1)).to eq [patient1.name, patient2.name]
+  end
+
+  it 'deletes a doctor from the system' do
+    doctor1 = Doctor.new({'name' => 'Dr. Wang'})
+    doctor1.save
+    doctor2 = Doctor.new({'name' => 'Dr. Smith'})
+    doctor2.save
+    patient1 = Patient.new({'name'=>'Joe Smith', 'birthdate' => '1980-01-01', 'insurance'=>'Blue Cross'})
+    patient1.save
+    doctor1.add_patient(patient1)
+    doctor1.delete(doctor1)
+    expect(Doctor.all).to eq [doctor2]
   end
 end
